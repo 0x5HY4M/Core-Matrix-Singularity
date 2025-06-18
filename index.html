@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Core Matrix Singularity</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+      font-family: monospace;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .core {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #00ff88, #003311);
+      box-shadow:
+        0 0 30px #00ff88,
+        0 0 60px #00ff88,
+        0 0 100px #00ff88,
+        inset 0 0 20px #00ff88;
+      transform: translate(-50%, -50%) rotate(0deg);
+      animation: rotate 8s linear infinite, pulse 2s ease-in-out infinite, glitch 1s infinite;
+      z-index: 1;
+    }
+
+    @keyframes rotate {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 30px #00ff88, 0 0 60px #00ff88, 0 0 100px #00ff88, inset 0 0 20px #00ff88; }
+      50% { box-shadow: 0 0 50px #00ff88, 0 0 90px #00ff88, 0 0 140px #00ff88, inset 0 0 30px #00ff88; }
+    }
+
+    @keyframes glitch {
+      0% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(30deg); }
+      100% { filter: hue-rotate(0deg); }
+    }
+
+    .tag {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      color: #00ff88;
+      text-shadow: 0 0 8px #00ff88;
+      z-index: 2;
+    }
+
+    .scanner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 2px;
+      background: rgba(0, 255, 136, 0.5);
+      box-shadow: 0 0 20px #00ff88;
+      transform: translate(-50%, -50%);
+      animation: scan 3s infinite ease-in-out;
+      z-index: 1;
+    }
+
+    @keyframes scan {
+      0% { transform: translate(-50%, -200px); opacity: 0; }
+      50% { transform: translate(-50%, 0); opacity: 1; }
+      100% { transform: translate(-50%, 200px); opacity: 0; }
+    }
+
+    .secret-message {
+      position: absolute;
+      top: 15%;
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      color: #00ff88;
+      text-shadow: 0 0 10px #00ff88;
+      z-index: 2;
+      animation: fadeIn 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+  <div class="core"></div>
+  <div class="scanner"></div>
+  <div class="secret-message">[ BOOTING SHYAMV.DEV... ]</div>
+  <div class="tag">@shyamx.dev</div>
+
+  <script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    let matrixText = "0 1 AI DATA SIGNAL CODE CORE BINARY".split(" ");
+
+    let fontSize = 14;
+    let columns = canvas.width / fontSize;
+    let drops = [];
+
+    for (let x = 0; x < columns; x++) drops[x] = 1;
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#00ff88";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        let text = matrixText[Math.floor(Math.random() * matrixText.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 33);
+  </script>
+</body>
+</html>
